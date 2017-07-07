@@ -11,6 +11,7 @@ require(bigh5)
 #'
 #' @examples
 measurePolarization = function(frameData) {
+  colnames(frameData) = c("R", "C", "u", "v")
   frameData$speed = sqrt(frameData$u^2+frameData$v^2)
   frameData = frameData[frameData$speed > 0,]
   frameData$unitu = frameData$u/frameData$speed
@@ -35,6 +36,7 @@ measurePolarization = function(frameData) {
 #' @examples
 measureRotation = function(frameData) {
   currFrame = frameData
+  colnames(currFrame) = c("R", "C", "u", "v")
   currFrame$centerR = mean(currFrame$R) # What is the center of mass?
   currFrame$centerC = mean(currFrame$C)
   
@@ -71,6 +73,7 @@ measureRotation = function(frameData) {
 #' @examples
 measureDilatation = function(frameData) {
   currFrame = frameData
+  colnames(currFrame) = c("R", "C", "u", "v")
   currFrame$centerR = mean(currFrame$R) # What is the center of mass?
   currFrame$centerC = mean(currFrame$C)
   

@@ -2,13 +2,16 @@
 % Please edit documentation in R/InternalOrderMeasureFunctions.R
 \name{measureRotation}
 \alias{measureRotation}
-\title{Rotation collective order}
+\title{Collective rotation order}
 \usage{
 measureRotation(frameData)
 }
 \arguments{
-\item{frameData}{A data frame of 4 columns (x, y, u, v) specifying the position and velocities items in group.}
+\item{frameData}{A data frame with the columns R, C, u, and V specifying optical flow properties}
+}
+\value{
+A scalar quantifying the rotation order (as in Couzin et al. 2002)
 }
 \description{
-Rotation collective order
+Collective rotation order
 }

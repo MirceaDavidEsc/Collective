@@ -2,16 +2,16 @@
 % Please edit documentation in R/InternalOrderMeasureFunctions.R
 \name{measurePolarization}
 \alias{measurePolarization}
-\title{Polarization collective order}
+\title{Collective polarization order}
 \usage{
 measurePolarization(frameData)
 }
 \arguments{
-\item{frameData}{A data frame of 4 columns (x, y, u, v) specifying the position and velocities items in group.}
+\item{frameData}{A data frame with the columns R, C, u, and V specifying optical flow properties}
 }
 \value{
-A scalar between -1 and 1 specifying the collective order.
+A scalar quantifying the polarization order (as in Couzin et al. 2002)
 }
 \description{
-Polarization collective order
+Collective polarization order
 }
