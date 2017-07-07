@@ -34,24 +34,62 @@ measurePolarization = function(frameData) {
 #'
 #' @examples
 measureRotation = function(frameData) {
-  currFrame = mutate(frameData,centerR = mean(R), centerC = mean(C))
-  #TODO: Continue here.
+  currFrame = frameData
+  currFrame$centerR = mean(currFrame$R) # What is the center of mass?
+  currFrame$centerC = mean(currFrame$C)
+  
   currFrame$speed = sqrt(currFrame$u^2+currFrame$v^2)
-  currFrame = currFrame[currFrame$speed > 0,]
-  currFrame$unitu = currFrame$u/currFrame$speed
+  currFrame = currFrame[currFrame$speed > 0,] # vectors of magnitude 0 will have undefined unit vectors; remove.
+  currFrame$unitu = currFrame$u/currFrame$speed # Define the unit vectors, and the relative position of particles from center.
   currFrame$unitv = currFrame$v/currFrame$speed
-  currFrame$relR = currFrame$R - currFrame$centerR
+  
+  currFrame$relR = currFrame$R - currFrame$centerR # Define relative position and unit vector of relative position.
   currFrame$relC = currFrame$C - currFrame$centerC
   currFrame$distFromCenter = sqrt(currFrame$relR^2 + currFrame$relC^2)
   currFrame = currFrame[currFrame$distFromCenter > 0,]
   currFrame$unitR = currFrame$relR/currFrame$distFromCenter
   currFrame$unitC = currFrame$relC/currFrame$distFromCenter
-  currFrame$rotationContribution = currFrame$unitC*currFrame$unitv - currFrame$unitR*currFrame$unitu
+  
+  currFrame$rotationContribution = currFrame$unitC * currFrame$unitv - currFrame$unitR * currFrame$unitu # Cross product of two vectors.
   rotation = mean(currFrame$rotationContribution)
   return(rotation)
 }
 
 
+
+
+#' Collective dilatation order
+#'
+#' This is based off of Attanasi et al. 2014 paper on swarmes of midges where they define an order parameter that measures the extent to which
+#' particles are moving outward (positive) or inward (negative) toward the center of mass of the collective.
+#' 
+#' @param frameData A data frame with the columns R, C, u, and V specifying optical flow properties
+#'
+#' @return A scalar quantifying the dilatation order (as in Couzin et al. 2002)
+#' @export
+#'
+#' @examples
+measureDilatation = function(frameData) {
+  currFrame = frameData
+  currFrame$centerR = mean(currFrame$R) # What is the center of mass?
+  currFrame$centerC = mean(currFrame$C)
+  
+  currFrame$speed = sqrt(currFrame$u^2+currFrame$v^2)
+  currFrame = currFrame[currFrame$speed > 0,] # vectors of magnitude 0 will have undefined unit vectors; remove.
+  currFrame$unitu = currFrame$u/currFrame$speed # Define the unit vectors, and the relative position of particles from center.
+  currFrame$unitv = currFrame$v/currFrame$speed
+  
+  currFrame$relR = currFrame$R - currFrame$centerR # Define relative position and unit vector of relative position.
+  currFrame$relC = currFrame$C - currFrame$centerC
+  currFrame$distFromCenter = sqrt(currFrame$relR^2 + currFrame$relC^2)
+  currFrame = currFrame[currFrame$distFromCenter > 0,]
+  currFrame$unitR = currFrame$relR/currFrame$distFromCenter
+  currFrame$unitC = currFrame$relC/currFrame$distFromCenter
+  
+  currFrame$dilatationContribution = currFrame$unitR * currFrame$unitv + currFrame$unitC * currFrame$unitu # Dot product of two vectors.
+  dilatation = mean(currFrame$rotationContribution)
+  return(dilatation)
+}
 
 
 
