@@ -40,11 +40,13 @@ measureRotation = function(frameData) {
   currFrame$centerR = mean(currFrame$R) # What is the center of mass?
   currFrame$centerC = mean(currFrame$C)
 
+  # Get unit vector velocities
   currFrame$speed = sqrt(currFrame$u^2+currFrame$v^2)
   currFrame = currFrame[currFrame$speed > 0,] # vectors of magnitude 0 will have undefined unit vectors; remove.
   currFrame$unitu = currFrame$u/currFrame$speed # Define the unit vectors, and the relative position of particles from center.
   currFrame$unitv = currFrame$v/currFrame$speed
 
+  # Get unit position vectors from center.
   currFrame$relR = currFrame$R - currFrame$centerR # Define relative position and unit vector of relative position.
   currFrame$relC = currFrame$C - currFrame$centerC
   currFrame$distFromCenter = sqrt(currFrame$relR^2 + currFrame$relC^2)
@@ -52,7 +54,7 @@ measureRotation = function(frameData) {
   currFrame$unitR = currFrame$relR/currFrame$distFromCenter
   currFrame$unitC = currFrame$relC/currFrame$distFromCenter
 
-  currFrame$rotationContribution = currFrame$unitC * currFrame$unitv - currFrame$unitR * currFrame$unitu # Cross product of two vectors.
+  currFrame$rotationContribution = currFrame$unitR * currFrame$unitv - currFrame$unitC * currFrame$unitu # Cross product of two vectors.
   rotation = mean(currFrame$rotationContribution)
   return(rotation)
 }
@@ -89,7 +91,7 @@ measureDilatation = function(frameData) {
   currFrame$unitR = currFrame$relR/currFrame$distFromCenter
   currFrame$unitC = currFrame$relC/currFrame$distFromCenter
 
-  currFrame$dilatationContribution = currFrame$unitR * currFrame$unitv + currFrame$unitC * currFrame$unitu # Dot product of two vectors.
+  currFrame$dilatationContribution = currFrame$unitC * currFrame$unitv + currFrame$unitR * currFrame$unitu # Dot product of two vectors.
   dilatation = mean(currFrame$dilatationContribution)
   return(dilatation)
 }
